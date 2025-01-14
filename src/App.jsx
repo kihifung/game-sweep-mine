@@ -19,6 +19,8 @@ const CellValue = {
 
 function App() {
   const [board, setBoard] = useState([]); // 遊戲版
+  const [gameWon, setGameWon] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   // 初始化遊戲版
   const initBoard = () => {
@@ -56,16 +58,38 @@ function App() {
     initBoard();
   }, []);
 
+  const revealMines = () => {
+    const newBoard = [...board];
+    for (let row = 0; row < BOARD_SIZE; row++) {
+      for (let col = 0; col < BOARD_SIZE; col++) {
+        // 如果踩到地雷，就把地雷顯示出來
+        if (newBoard[row][col].value === CellValue.MINE) {
+          newBoard[row][col].state = CellState.REVEALED;
+        }
+      }
+    }
+    setBoard(newBoard);
+  };
+
+  //點開格子
   const revealCell = (row, col) => {
+    if (gameOver || gameWon) return; // 如果現在的狀態是遊戲結束或是完成遊戲，就不做任何事(不改變格子的狀態)
+
     const selectedCell = board[row][col];
     if (selectedCell.state !== CellState.HIDDEN) return;
     const newBoard = [...board];
     newBoard[row][col].state = CellState.REVEALED;
-
     setBoard(newBoard);
+
+    if (selectedCell.value === CellValue.MINE) {
+      setGameOver(true);
+      revealMines();
+    }
+    // if(selectedCell.value === CellValue.EMPTY)
   };
 
   const setFlag = (row, col) => {
+    if (gameOver || gameWon) return; // 如果現在的狀態是遊戲結束或是完成遊戲，就不做任何事(不改變格子的狀態)
     const newBoard = [...board];
     const selectedCell = newBoard[row][col];
     if (selectedCell.state === CellState.REVEALED) return; // 格子已經被掀開，不做任何事
