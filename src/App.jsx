@@ -34,6 +34,7 @@ function App() {
           state: CellState.HIDDEN,
           value: CellValue.EMPTY,
           // 顯示的數字：周遭有多少地雷
+          neighborMinesCount: 0,
         });
       }
       newBoard.push(newRow);
@@ -50,13 +51,45 @@ function App() {
         newCell.value = CellValue.MINE;
         minesCounts++;
       }
-      console.log(newBoard);
-      setBoard(newBoard);
     }
+    calculateNeighborMines(newBoard);
+    // setBoard(newBoard);
   };
   useEffect(() => {
     initBoard();
   }, []);
+
+  const calculateNeighborMines = (newBoard) => {
+    // 透過巢狀迴圈，計算每一格周遭有多少地雷
+    for (let row = 0; row < BOARD_SIZE; row++) {
+      for (let col = 0; col < BOARD_SIZE; col++) {
+        const selectedCell = newBoard[row][col];
+        if (selectedCell.value === CellValue.MINE) continue;
+        let count = 0;
+
+        for (let i = -1; i <= 1; i++) {
+          for (let j = -1; j <= 1; j++) {
+            if (i === 0 && j === 0) continue;
+            const newRow = row + i;
+            const newCol = col + j;
+
+            if (
+              newRow > 0 &&
+              newRow < BOARD_SIZE &&
+              newCol > 0 &&
+              newCol < BOARD_SIZE
+            ) {
+              if (newBoard[newRow][newCol].value === CellValue.MINE) {
+                count++;
+              }
+            }
+          }
+        }
+        selectedCell.neighborMinesCount = count;
+      }
+    }
+    setBoard(newBoard);
+  };
 
   const revealMines = () => {
     const newBoard = [...board];

@@ -18,6 +18,7 @@ const Cell = ({ cell, revealCell, setFlag }) => {
     }
     if (cell.value === CellValue.EMPTY) {
       // 判斷周遭是空的還是有地雷(這個上面是否會顯示數字)
+      content = cell.neighborMinesCount > 0 ? cell.neighborMinesCount : "";
     }
   } else if (cell.state === CellState.FLAGGED) {
     content = <span className="flag">&#128681;</span>; // 如果格子有被標示，就要顯示旗子
