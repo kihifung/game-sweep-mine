@@ -10,7 +10,7 @@ const CellValue = {
   EMPTY: "empty",
 };
 
-const Cell = ({ cell, revealCell }) => {
+const Cell = ({ cell, revealCell, setFlag }) => {
   let content;
   if (cell.state === CellState.REVEALED) {
     if (cell.value === CellValue.MINE) {
@@ -19,15 +19,23 @@ const Cell = ({ cell, revealCell }) => {
     if (cell.value === CellValue.EMPTY) {
       // 判斷周遭是空的還是有地雷(這個上面是否會顯示數字)
     }
-  } else if (cell.value === CellState.FLAGGED) {
-    content = <span className="flag">&#128681</span>; // 如果格子有被標示，就要顯示旗子
+  } else if (cell.state === CellState.FLAGGED) {
+    content = <span className="flag">&#128681;</span>; // 如果格子有被標示，就要顯示旗子
   }
+  // const leftClick = () => {
+
+  // };
+  //const rightClick = () => {};
 
   return (
     <div
       className={`cell ${cell.state}`}
       onClick={() => {
         revealCell(cell.row, cell.col);
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setFlag(cell.row, cell.col);
       }}
     >
       {content}

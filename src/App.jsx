@@ -65,6 +65,17 @@ function App() {
     setBoard(newBoard);
   };
 
+  const setFlag = (row, col) => {
+    const newBoard = [...board];
+    const selectedCell = newBoard[row][col];
+    if (selectedCell.state === CellState.REVEALED) return; // 格子已經被掀開，不做任何事
+    selectedCell.state =
+      selectedCell.state === CellState.FLAGGED
+        ? CellState.HIDDEN
+        : CellState.FLAGGED;
+    setBoard(newBoard);
+  };
+
   return (
     <div className="App">
       <h1>踩地雷</h1>
@@ -72,7 +83,12 @@ function App() {
         {board.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
             {row.map((cell, colIndex) => (
-              <Cell cell={cell} revealCell={revealCell} key={colIndex}></Cell>
+              <Cell
+                cell={cell}
+                revealCell={revealCell}
+                key={colIndex}
+                setFlag={setFlag}
+              ></Cell>
             ))}
           </div>
         ))}
