@@ -173,7 +173,7 @@ function App() {
     if (board.length > 0) {
       if (checkIfWin()) {
         setGameWon(true);
-        alert("you won!");
+        // alert("you won!");
       }
     }
   }, [board]);
@@ -192,7 +192,24 @@ function App() {
 
   return (
     <div className="App">
-      <h1>踩地雷</h1>
+      <div className="info">
+        <h1>踩地雷</h1>
+        <p>
+          遊戲範圍：{BOARD_SIZE}x{BOARD_SIZE}={BOARD_SIZE * BOARD_SIZE}
+          <br></br>地雷數量：
+          {NUMBER_OF_MINES}
+        </p>
+        <button
+          className="restart"
+          onClick={() => {
+            initBoard();
+            setGameOver(false);
+            setGameWon(false);
+          }}
+        >
+          重新開始
+        </button>
+      </div>
       <div className="game-board">
         {board.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
@@ -206,6 +223,31 @@ function App() {
             ))}
           </div>
         ))}
+        {gameOver && (
+          <div className="over">
+            <button
+              onClick={() => {
+                initBoard();
+                setGameOver(false);
+              }}
+            >
+              遊戲結束。 <br></br>再來一次？
+            </button>
+          </div>
+        )}
+        {gameWon && (
+          <div className="over">
+            <button
+              onClick={() => {
+                initBoard();
+                setGameOver(false);
+                setGameWon(false);
+              }}
+            >
+              你贏了！ <br></br>再一次？
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

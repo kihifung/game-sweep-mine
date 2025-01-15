@@ -32,9 +32,15 @@ button:hover {
 .App {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  justify-content: flex-start; /* 靠近上方 */
+  padding-bottom: 24px; /* 增加下方空間 */
 }
-
+/* .h1 {
+  justify-content: center;
+  align-items: center;
+} */
 .game-board {
   display: flex;
   flex-direction: column;
@@ -98,9 +104,38 @@ button:hover {
   cursor: pointer;
 }
 
+.restart {
+  background-color: #f46608;
+}
+
 .mine-image {
   width: 20px;
   height: 20px;
   display: block;
   margin: auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  justify-content: center; /* 垂直置中 */
+  align-items: center; /* 水平置中 */
+  text-align: center; /* 文字置中 */
+  margin-top: 8px; /* 與上方的間距 */
+  gap: 16px; /* 各行文字的間隔，調整為所需的值 */
+}
+
+.info h1 {
+  margin: 0; /* 去掉額外間距 */
+  margin-bottom: 10px; /* 與下一行的間距 */
+}
+
+.info p {
+  margin: 0;
+  margin-bottom: 2px;
+}
+
+.info button {
+  /* margin: 0; */
+  margin-bottom: 12px;
 }
