@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Cell from "./components/Cell";
 // 常數
 const BOARD_SIZE = 8; // 遊戲的邊長
-const NUMBER_OF_MINES = 15; // 幾顆地雷
+const NUMBER_OF_MINES = 10; // 幾顆地雷
 
 // 定義 "每一格" 的狀態
 const CellState = {
@@ -118,7 +118,42 @@ function App() {
       setGameOver(true);
       revealMines();
     }
-    // if(selectedCell.value === CellValue.EMPTY)
+    if (
+      selectedCell.value === CellValue.EMPTY &&
+      selectedCell.neighborMinesCount === 0
+    ) {
+      revealNeighborsCells(newBoard, row, col);
+    }
+  };
+
+  const revealNeighborsCells = (newBoard, row, col) => {
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (i === 0 && j === 0) continue;
+        const newRow = row + i;
+        const newCol = col + j;
+
+        if (
+          newRow >= 0 &&
+          newRow < BOARD_SIZE &&
+          newCol >= 0 &&
+          newCol < BOARD_SIZE
+        ) {
+          const neighborCell = newBoard[newRow][newCol];
+          if (neighborCell.state === CellState.HIDDEN) {
+            neighborCell.state = CellState.REVEALED;
+            //如果掀開之後是空的，就繼續掀開周遭的格子
+            if (
+              neighborCell.value === CellValue.EMPTY &&
+              neighborCell.neighborMinesCount === 0
+            ) {
+              revealNeighborsCells(newBoard, newRow, newCol);
+            }
+          }
+        }
+      }
+    }
+    setBoard(newBoard);
   };
 
   const setFlag = (row, col) => {
