@@ -97,3 +97,10 @@ button:hover {
   border-radius: 8px;
   cursor: pointer;
 }
+
+.mine-image {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin: auto;
+}

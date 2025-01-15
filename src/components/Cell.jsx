@@ -14,7 +14,12 @@ const Cell = ({ cell, revealCell, setFlag }) => {
   let content;
   if (cell.state === CellState.REVEALED) {
     if (cell.value === CellValue.MINE) {
-      content = <span className="mine">M</span>; // 翻開之後發現是地雷
+      content = (
+        <span className="mine">
+          {/* M */}
+          <img src="/land-mine.png" alt="mine/bomb" className="mine-image" />
+        </span>
+      ); // 翻開之後發現是地雷
     }
     if (cell.value === CellValue.EMPTY) {
       // 判斷周遭是空的還是有地雷(這個上面是否會顯示數字)
