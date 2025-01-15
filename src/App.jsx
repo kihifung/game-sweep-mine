@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import Cell from "./components/Cell";
 // 常數
-const BOARD_SIZE = 8; // 遊戲的邊長
+const BOARD_SIZE = 9; // 遊戲的邊長
 const NUMBER_OF_MINES = 10; // 幾顆地雷
 
 // 定義 "每一格" 的狀態
@@ -202,7 +202,7 @@ function App() {
         <button
           className="restart"
           onClick={() => {
-            initBoard();
+            initBoard(); //重置整個棋盤
             setGameOver(false);
             setGameWon(false);
           }}
