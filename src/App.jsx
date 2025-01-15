@@ -156,6 +156,28 @@ function App() {
     setBoard(newBoard);
   };
 
+  const checkIfWin = () => {
+    for (let row = 0; row < BOARD_SIZE; row++) {
+      for (let col = 0; col < BOARD_SIZE; col++) {
+        const cell = board[row][col];
+        if (cell.value === CellValue.MINE && cell.state !== CellState.FLAGGED)
+          return false;
+        if (cell.value !== CellValue.MINE && cell.state !== CellState.REVEALED)
+          return false;
+      }
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    if (board.length > 0) {
+      if (checkIfWin()) {
+        setGameWon(true);
+        alert("you won!");
+      }
+    }
+  }, [board]);
+
   const setFlag = (row, col) => {
     if (gameOver || gameWon) return; // 如果現在的狀態是遊戲結束或是完成遊戲，就不做任何事(不改變格子的狀態)
     const newBoard = [...board];
