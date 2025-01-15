@@ -74,9 +74,9 @@ function App() {
             const newCol = col + j;
 
             if (
-              newRow > 0 &&
+              newRow >= 0 &&
               newRow < BOARD_SIZE &&
-              newCol > 0 &&
+              newCol >= 0 &&
               newCol < BOARD_SIZE
             ) {
               if (newBoard[newRow][newCol].value === CellValue.MINE) {
