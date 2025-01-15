@@ -21,6 +21,7 @@ function App() {
   const [board, setBoard] = useState([]); // 遊戲版
   const [gameWon, setGameWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [clickedMine, setClickedMine] = useState(null); // 新增狀態
 
   // 初始化遊戲版
   const initBoard = () => {
@@ -110,20 +111,23 @@ function App() {
 
     const selectedCell = board[row][col];
     if (selectedCell.state !== CellState.HIDDEN) return;
+
     const newBoard = [...board];
     newBoard[row][col].state = CellState.REVEALED;
+
     setBoard(newBoard);
 
     if (selectedCell.value === CellValue.MINE) {
       setGameOver(true);
+      setClickedMine({ row, col }); // 記錄被點擊的地雷位置
       revealMines();
-    }
-    if (
+    } else if (
       selectedCell.value === CellValue.EMPTY &&
       selectedCell.neighborMinesCount === 0
     ) {
       revealNeighborsCells(newBoard, row, col);
     }
+    setBoard(newBoard);
   };
 
   const revealNeighborsCells = (newBoard, row, col) => {
@@ -205,6 +209,7 @@ function App() {
             initBoard(); //重置整個棋盤
             setGameOver(false);
             setGameWon(false);
+            setClickedMine(null); // 清除被點擊的地雷狀態
           }}
         >
           重新開始
@@ -215,10 +220,13 @@ function App() {
           <div key={rowIndex} className="row">
             {row.map((cell, colIndex) => (
               <Cell
+                key={colIndex}
                 cell={cell}
                 revealCell={revealCell}
-                key={colIndex}
                 setFlag={setFlag}
+                isClickedMine={
+                  clickedMine?.row === rowIndex && clickedMine?.col === colIndex
+                } // 判斷是否為被點擊的地雷
               ></Cell>
             ))}
           </div>
@@ -229,6 +237,7 @@ function App() {
               onClick={() => {
                 initBoard();
                 setGameOver(false);
+                setClickedMine(null); // 清除被點擊的地雷狀態
               }}
             >
               遊戲結束。 <br></br>再來一次？
@@ -242,6 +251,7 @@ function App() {
                 initBoard();
                 setGameOver(false);
                 setGameWon(false);
+                setClickedMine(null); // 清除被點擊的地雷狀態
               }}
             >
               你贏了！ <br></br>再一次？

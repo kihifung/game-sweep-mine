@@ -10,7 +10,8 @@ const CellValue = {
   EMPTY: "empty",
 };
 
-const Cell = ({ cell, revealCell, setFlag }) => {
+const Cell = ({ cell, revealCell, setFlag, isClickedMine }) => {
+  // 增加了 isClickedMine prop，用來標記當前格子是否為被點擊的地雷。
   let content;
   if (cell.state === CellState.REVEALED) {
     if (cell.value === CellValue.MINE) {
@@ -20,14 +21,16 @@ const Cell = ({ cell, revealCell, setFlag }) => {
           <img src="/land-mine.png" alt="mine/bomb" className="mine-image" />
         </span>
       ); // 翻開之後發現是地雷
-    }
-    if (cell.value === CellValue.EMPTY) {
+    } else if (cell.value === CellValue.EMPTY) {
       // 判斷周遭是空的還是有地雷(這個上面是否會顯示數字)
       content = cell.neighborMinesCount > 0 ? cell.neighborMinesCount : "";
     }
   } else if (cell.state === CellState.FLAGGED) {
     content = <span className="flag">&#128681;</span>; // 如果格子有被標示，就要顯示旗子
   }
+  // 當 isClickedMine 為 true 時，將 mine-hit 類名應用到該格子。
+  const cellClassName = `cell ${cell.state} ${isClickedMine ? "mine-hit" : ""}`;
+
   // const leftClick = () => {
 
   // };
@@ -35,7 +38,7 @@ const Cell = ({ cell, revealCell, setFlag }) => {
 
   return (
     <div
-      className={`cell ${cell.state}`}
+      className={cellClassName}
       onClick={() => {
         revealCell(cell.row, cell.col);
       }}
