@@ -1,3 +1,8 @@
+展示連結：
+https://a-sweep-mines-game.netlify.app/
+
+---
+
 # 動手玩 React！（踩地雷）
 
 線上試玩：https://5xcampus-game-minesweeper.netlify.app/
